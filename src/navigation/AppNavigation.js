@@ -88,7 +88,7 @@ export default function AppNavigation() {
   }
 
   return (
-    <StackNavigator screenOptions={{ headerShown: false}}>
+    <Stack.Navigator screenOptions={{ headerShown: false}}>
         { user == null ? ( //No hay sesión iniciada?, entonces habilita pantallas Login y Registro solamente
             // flujo de Autenticación
             <>
@@ -100,6 +100,6 @@ export default function AppNavigation() {
             //flujo de navegacion con un usuario logueado
             <Stack.Screen name="AppHome" component={HomeTabs} />
         )}
-    </StackNavigator>
+    </Stack.Navigator>
   );
 }
