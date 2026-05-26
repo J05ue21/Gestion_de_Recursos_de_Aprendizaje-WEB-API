@@ -30,7 +30,7 @@ export default function RegisterScreen({ navigation }) {
         setErrorGeneral('');
 
         //validacion de campos vacios
-        if (nombre.trim() === '' || email.trim() === '' || password.trim() === '') {
+        if (!nombre.trim() || !email.trim() || !password.trim()) {
             setErrorGeneral('Por favor, complete todos los campos');
             return;
         }
@@ -41,13 +41,17 @@ export default function RegisterScreen({ navigation }) {
             return;
         }
 
-        setLoading(false);
+        setLoading(true);
         try {
-            setLoading(true);
+            //recuperando lista de usuarios de MockAPI
+            const response = await api.get('/usuarios');
+            const listaUsuarios = response.data || [];
+            
+            //verificar si el email ya existe
+            const correoExiste = listaUsuarios.some((user) => user.email?.toLowerCase() === email.toLowerCase().trim()
+            );
 
-            //verificar si el email ya existe en MockAPI
-            const reponseCheck = await api.get('/usuarios?email=${email.ToLowerCase()}');
-            if(responseCheck.data.length > 0) {
+            if(correoExiste) {
                 setErrorGeneral('El correo electronico ingresado ya está registrado');
                 setLoading(false);
                 return;
@@ -55,16 +59,17 @@ export default function RegisterScreen({ navigation }) {
             
             //guarda el nuevo usuario en MockAPI
             await api.post('/usuarios', {
-                nombre,
-                email: email.toLowerCase(),
-                password,
-                rol,
+                nombre: nombre.trim(),
+                email: email.toLowerCase().trim(),
+                password: password,
+                rol: rol,
             });
 
             alert('¡Usuario registrado con éxito! Ahora puedes iniciar sesión.');
             navigation.navigate('Login');
+
         } catch (error) {
-            console.error(error);
+            console.error("Detalle del error en el registro:", error.response?.data || error.message);
             setErrorGeneral('Hubo un error al conectar con el servidor. Inténtalo más tarde.');
         } finally {
             setLoading(false);
