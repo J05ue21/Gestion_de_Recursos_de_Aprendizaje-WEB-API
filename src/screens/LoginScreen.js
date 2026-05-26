@@ -22,30 +22,32 @@ export default function LoginScreen({ navigation }) {
 
     setLoading(true);
     try {
-      // consulta a MockAPI por el email del usuario
-      const response = await api.get(`/usuarios?email=${email.toLowerCase()}`);
-      
-      if (response.data.length > 0) {
-        const usuarioEncontrado = response.data[0];
-        
-        // validamos la contraseña (en MockAPI se guardan en texto plano)
-        if (usuarioEncontrado.password === password) {
-          // se genera el login en el [AuthContext]
-          await login(usuarioEncontrado);
-        } else {
-          setError('Contraseña incorrecta');
-        }
+          //recuperando lista de usuarios de MockAPI
+          const response = await api.get('/usuarios');
+          const listaUsuarios = response.data || [];
+          
+          // verificar si el email ya existe
+          const usuarioEncontrado = listaUsuarios.find((usuario) => usuario.email?.toLowerCase() === email.toLowerCase().trim()
+          );
 
-      } else {
-        setError('El usuario ingresado no existe');
-      }
+          // existe el usuario y que coincida la contraseña?
+          if (usuarioEncontrado && usuarioEncontrado.password === password) {
+              
+            // Si todo coincide, iniciamos sesión en el contexto global
+              await login(usuarioEncontrado);
+
+          } else {
+              // mensaje si falló el correo o la contraseña)
+              setError('Credenciales incorrectas');
+          }
+            
     } catch (err) {
       console.error(err);
       setError('Error al conectar con el servidor');
     } finally {
       setLoading(false);
     }
-  };
+  };  //fin handleLogin----------------------------------
 
   return (
     <View style={styles.container}>
