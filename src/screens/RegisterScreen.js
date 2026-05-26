@@ -21,7 +21,7 @@ export default function RegisterScreen({ navigation }) {
      * Al menos un carácter especial ( !@#$%^&* ) 
      **/
     const validarContrasena = (pass) => {
-        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%*?&])[A-Za-z\d@#$!%*?&]{12,}$/;
         //const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#\$%\^&\*])[A-Za-z\d!@#\$%\^&\*]{12,}$/;
         return regex.test(pass);
     };
