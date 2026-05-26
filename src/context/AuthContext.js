@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const AuthContext = createContext();
 
-const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -27,7 +27,7 @@ useEffect(() => {
 
 // funcion para inicio de sesion 
 const login = async (userData) => {
-    serUser(userData);
+    setUser(userData);
     await AsyncStorage.setItem('@user_session', JSON.stringify(userData));
 };
 
