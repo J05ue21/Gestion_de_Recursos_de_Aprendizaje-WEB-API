@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
-import { StyleSheet, View, FlatList, Linking } from 'react-native';
+import React, { useState, useCallback, useContext } from 'react';
+import { StyleSheet, View, FlatList, Linking, Platform } from 'react-native'; // importar Platform para soporte en pantalla web
 import { Text, Card, Button, TextInput, Chip, ActivityIndicator, IconButton, Portal, Dialog, RadioButton } from 'react-native-paper';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -109,105 +109,107 @@ export default function HomeScreen() {
   //------------------------------------------------------------
 
   return (
-    <View style={styles.container}>
-      
-      
-      {/* barra de Búsqueda en tiempo real*/}
-      <TextInput
-        placeholder="Buscar por título o descripción..."
-        value={search}
-        onChangeText={setSearch}
-        mode="outlined"
-        left={<TextInput.Icon icon="magnify" />}
-        style={styles.searchBar}
-      />
-
-      {/* selector de categorias utilizando 'Chips' de react-native-paper*/}
-      <View style={styles.chipContainer}>
-        {['Todos', 'Libro', 'Video', 'Artículo', 'Tutorial'].map((tipo) => (
-          <Chip
-            key={tipo}
-            selected={filtroTipo === tipo}
-            onPress={() => setFiltroTipo(tipo)}
-            style={styles.chip}
-            selectedColor="#000000"
-            background={filtroTipo === tipo ? { color: '#6700f8' } : undefined}
-          >
-            {tipo}
-          </Chip>
-        ))}
-      </View>
-
-      {/* listado de Tarjetas */}
-      <FlatList
-        data={recursosFiltrados}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => {
-          const esFav = favoritosIds.includes(item.id);
-          return (
-            <Card style={styles.card}>
-              <Card.Cover source={{ uri: item.imagen || 'https://via.placeholder.com/150' }} />
-              
-              <Card.Content style={styles.cardContent}>
-                <View style={styles.rowJustified}>
-                  <Text variant="titleMedium" style={styles.cardTitle}>{item.titulo}</Text>
-                  <Chip compact style={styles.typeChip}>{item.tipo}</Chip>
-                </View>
-                <Text variant="bodyMedium" style={styles.description}>{item.descripcion}</Text>
+    <View style={styles.mainWrapper}>
+      <View style={styles.container}>
                 
-                <View style={styles.ratingRow}>
-                  <IconButton icon="star" iconColor="#f1c40f" size={20} style={{ margin: 0 }} />
-                  <Text style={styles.ratingText}>
-                    {item.rating == 0 ? 'Sin calificaciones' : `${item.rating} / 5.0`}
-                  </Text>
-                </View>
-              </Card.Content>
+        {/* barra de Búsqueda en tiempo real*/}
+        <TextInput
+          placeholder="Buscar por título o descripción..."
+          value={search}
+          onChangeText={setSearch}
+          mode="outlined"
+          left={<TextInput.Icon icon="magnify" />}
+          style={styles.searchBar}
+        />
 
-              <Card.Actions>
-                <IconButton
-                  icon={esFav ? "heart" : "heart-outline"}
-                  iconColor={esFav ? "red" : "gray"}
-                  size={24}
-                  onPress={() => toggleFavorito(item.id)}
-                />
-                <Button mode="outlined" onPress={() => abrirDialogoCalificar(item)}>
-                  Calificar
-                </Button>
-                <Button mode="contained" onPress={() => Linking.openURL(item.enlace)}>
-                  Ver Recurso
-                </Button>
-              </Card.Actions>
-            </Card>
-          );
-        }}
-        ListEmptyComponent={
-          <Text style={styles.emptyText}>No se encontraron recursos disponibles.</Text>
-        }
-      />
+        {/* selector de categorias utilizando 'Chips' de react-native-paper*/}
+        <View style={styles.chipContainer}>
+          {['Todos', 'Libro', 'Video', 'Artículo', 'Tutorial'].map((tipo) => (
+            <Chip
+              key={tipo}
+              selected={filtroTipo === tipo}
+              onPress={() => setFiltroTipo(tipo)}
+              style={styles.chip}
+              selectedColor="#000000"
+              background={filtroTipo === tipo ? { color: '#6700f8' } : undefined}
+            >
+              {tipo}
+            </Chip>
+          ))}
+        </View>
 
-      {/* cuadro de dialogo para Ratings */}
-      <Portal>
-        <Dialog visible={visibleDialog} onDismiss={() => setVisibleDialog(false)}>
-          <Dialog.Title>Calificar Recurso</Dialog.Title>
-          <Dialog.Content>
-            <Text variant="bodyMedium" style={{ marginBottom: 10 }}>
-              ¿Qué puntuación le otorgas a: "{recursoSeleccionado?.titulo}"?
-            </Text>
-            <RadioButton.Group onValueChange={value => setNuevaCalificacion(value)} value={nuevaCalificacion}>
-              {[1, 2, 3, 4, 5].map((estrella) => (
-                <View key={estrella} style={styles.dialogRadioItem}>
-                  <RadioButton value={estrella} />
-                  <Text>{estrella} {estrella === 1 ? 'Estreha' : 'Estrellas'}</Text>
-                </View>
-              ))}
-            </RadioButton.Group>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={() => setVisibleDialog(false)}>Cancelar</Button>
-            <Button mode="contained" onPress={enviarCalificacion}>Guardar</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+        {/* listado de Tarjetas */}
+        <FlatList
+          data={recursosFiltrados}
+          keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={{ paddingBottom: 20 }}
+          renderItem={({ item }) => {
+            const esFav = favoritosIds.includes(item.id);
+            return (
+              <Card style={styles.card}>
+                <Card.Cover source={{ uri: item.imagen || 'https://via.placeholder.com/150' }} />
+                
+                <Card.Content style={styles.cardContent}>
+                  <View style={styles.rowJustified}>
+                    <Text variant="titleMedium" style={styles.cardTitle}>{item.titulo}</Text>
+                    <Chip compact style={styles.typeChip}>{item.tipo}</Chip>
+                  </View>
+                  <Text variant="bodyMedium" style={styles.description}>{item.descripcion}</Text>
+                  
+                  <View style={styles.ratingRow}>
+                    <IconButton icon="star" iconColor="#f1c40f" size={20} style={{ margin: 0 }} />
+                    <Text style={styles.ratingText}>
+                      {item.rating == 0 ? 'Sin calificaciones' : `${item.rating} / 5.0`}
+                    </Text>
+                  </View>
+                </Card.Content>
+
+                <Card.Actions>
+                  <IconButton
+                    icon={esFav ? "heart" : "heart-outline"}
+                    iconColor={esFav ? "red" : "gray"}
+                    size={24}
+                    onPress={() => toggleFavorito(item.id)}
+                  />
+                  <Button mode="outlined" onPress={() => abrirDialogoCalificar(item)}>
+                    Calificar
+                  </Button>
+                  <Button mode="contained" onPress={() => Linking.openURL(item.enlace)}>
+                    Ver Recurso
+                  </Button>
+                </Card.Actions>
+              </Card>
+            );
+          }}
+          ListEmptyComponent={
+            <Text style={styles.emptyText}>No se encontraron recursos disponibles.</Text>
+          }
+        />
+
+        {/* cuadro de dialogo para Ratings */}
+        <Portal>
+          <Dialog visible={visibleDialog} onDismiss={() => setVisibleDialog(false)}>
+            <Dialog.Title>Calificar Recurso</Dialog.Title>
+            <Dialog.Content>
+              <Text variant="bodyMedium" style={{ marginBottom: 10 }}>
+                ¿Qué puntuación le otorgas a: "{recursoSeleccionado?.titulo}"?
+              </Text>
+              <RadioButton.Group onValueChange={value => setNuevaCalificacion(value)} value={nuevaCalificacion}>
+                {[1, 2, 3, 4, 5].map((estrella) => (
+                  <View key={estrella} style={styles.dialogRadioItem}>
+                    <RadioButton value={estrella} />
+                    <Text>{estrella} {estrella === 1 ? 'Estreha' : 'Estrellas'}</Text>
+                  </View>
+                ))}
+              </RadioButton.Group>
+            </Dialog.Content>
+            <Dialog.Actions>
+              <Button onPress={() => setVisibleDialog(false)}>Cancelar</Button>
+              <Button mode="contained" onPress={enviarCalificacion}>Guardar</Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
+      </View>
     </View>
   );
 }
