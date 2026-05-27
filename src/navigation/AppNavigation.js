@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, TouchableOpacity, Text } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AuthContext } from '../context/AuthContext';
@@ -19,7 +19,7 @@ const Tab = createBottomTabNavigator();
 
 // Control del flujo de pantallas luego de iniciar sesion
 function HomeTabs() {
-    const { user } = useContext(AuthContext);
+    const { user, logout } = useContext(AuthContext); //accion de cerrar sesion global, ahora en cabecera de AppNavigation
 
     return (
         <Tab.Navigator
@@ -28,6 +28,18 @@ function HomeTabs() {
                 tabBarInactiveTintColor: 'gray',
                 headerStyle: { backgroundColor: '#6200ee' },
                 headerTintColor: '#fff',
+                
+                // ahora el saludo y boton de cierre de sesion se muestra en la parte superior derecha
+                headerRight: () => (
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 15 }}>
+                        <Text style={{ color: '#fff', marginRight: 12, fontSize: 14, fontWeight: '500' }}>
+                            Hola, {user?.nombre?.split(' ')[0]} 
+                        </Text>
+                        <TouchableOpacity onPress={logout} activeOpacity={0.7}>
+                            <MaterialCommunityIcons name="logout" color="#fff" size={22} />
+                        </TouchableOpacity>
+                    </View>
+                ),
             }}
         >
            
