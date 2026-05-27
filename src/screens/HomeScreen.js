@@ -111,20 +111,7 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       
-      {/* header: saludo personalizado y botón de cerrar sesión */}
-      <View style={styles.headerRow}>
-        <Text variant="headlineSmall" style={styles.welcomeText}>
-          ¡Hola, {user?.nombre || 'Estudiante'}! 👋
-        </Text>
-        <IconButton 
-          icon="logout" 
-          iconColor="#6200ee" 
-          size={24} 
-          onPress={logout} 
-          style={styles.logoutButton}
-        />
-      </View>
-
+      
       {/* barra de Búsqueda en tiempo real*/}
       <TextInput
         placeholder="Buscar por título o descripción..."
