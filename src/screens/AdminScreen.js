@@ -4,7 +4,7 @@ import { StyleSheet, View, FlatList, ScrollView, Platform, Alert } from 'react-n
 import { Text, Card, Button, TextInput, RadioButton, ActivityIndicator, IconButton, Portal, Dialog } from 'react-native-paper';
 import { useFocusEffect } from '@react-navigation/native';
 import api from '../services/api'
-import { styles } from '../../../../../Downloads/gemini-code-1779918107706';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function AdminScreen() {
   const [recursos, setRecursos] = useState([]);
@@ -204,10 +204,99 @@ export default function AdminScreen() {
               />
             </Card> 
           )}
+
+          ListEmptyComponent={
+            <Text style={styles.emptyText}>
+              No se encontraron recursos disponibles ¡Crea el primero!
+            </Text>
+          }
         />
+
+        {/* pantalla secundarias para Crear o Editar */}
+        <Portal>
+          <Dialog visible={visibleDialog} onDismiss={() => setVisibleDialog(false)} style={styles.dialogSize}>
+            <Dialog.Title style={styles.dialogTitle}>
+              {editandoId ? '✏️ Editar Recurso' : '🚀 Registrar Nuevo Recurso'}
+            </Dialog.Title>
+            
+            <Dialog.ScrollArea style={{ paddingHorizontal: 10 }}>
+              <ScrollView contentContainerStyle={{ paddingVertical: 10 }}>
+                <TextInput
+                  label="Título del Recurso *"
+                  value={titulo}
+                  onChangeText={setTitulo}
+                  mode="outlined"
+                  style={styles.input}
+                />
+
+                <TextInput
+                  label="Reseña o descripción breve *"
+                  value={descripcion}
+                  onChangeText={setDescripcion}
+                  mode="outlined"
+                  multiline
+                  numberOfLines={3}
+                  style={styles.input}
+                />
+
+                <TextInput
+                  label="URL de la Imagen (opcional)"
+                  value={imagen}
+                  onChangeText={setImagen}
+                  mode="outlined"
+                  placeholder="https://.../imagen.jpg"
+                  style={styles.input}
+                />
+
+                <TextInput
+                  label="URL del Recurso Educativo *"
+                  value={enlace}
+                  onChangeText={setEnlace}
+                  mode="outlined"
+                  placeholder="https://..."
+                  keyboardType="url"
+                  autoCapitalize="none"
+                  style={styles.input}
+                />
+
+                {/* elija el tipo de recurso que está ingresando */}
+                <Text style={styles.labelRadio}>
+                  Tipo de Formato:
+                </Text>
+                <RadioButton.Group onValueChange={value => setTipo(value)} value={tipo}>
+                  <View style={styles.radioRow}>
+                    <View style={styles.radioOption}>
+                      <RadioButton value="Libro" />
+                      <Text>Libro / PDF</Text>
+                    </View>
+                    <View style={styles.radioOption}>
+                      <RadioButton value="Video" />
+                      <Text>Vídeo / Tutorial</Text>
+                    </View>
+                    <View style={styles.radioOption}>
+                      <RadioButton value="Articulo" />
+                      <Text>Artículo / Publicación</Text>
+                    </View>
+                  </View>
+                </RadioButton.Group>
+
+              </ScrollView>
+            </Dialog.ScrollArea>
+
+            <Dialog.Actions>
+              <Button onPress={() => setVisibleDialog(false)} textColor="gray">
+                Cancelar
+              </Button>
+              <Button mode="contained" onPress={handleGuardar} style={{ marginLeft: 10 }}>
+                {editandoId ? 'Actualizar' : 'Publicar'}
+              </Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
       </View>
     </View>
   );
+}
 
         
       
