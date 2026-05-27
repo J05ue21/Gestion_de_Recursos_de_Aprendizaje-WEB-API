@@ -4,6 +4,7 @@ import { StyleSheet, View, FlatList, ScrollView, Platform, Alert } from 'react-n
 import { Text, Card, Button, TextInput, RadioButton, ActivityIndicator, IconButton, Portal, Dialog } from 'react-native-paper';
 import { useFocusEffect } from '@react-navigation/native';
 import api from '../services/api'
+import { styles } from '../../../../../Downloads/gemini-code-1779918107706';
 
 export default function AdminScreen() {
   const [recursos, setRecursos] = useState([]);
@@ -144,23 +145,69 @@ export default function AdminScreen() {
         );
       }
 
-
-
-
   //--------------------------------------------------------------
+  
   return (
-    <View style={styles.container}>
-      <Text variant="headlineMedium">Administrar Recursos</Text>
-      <Text>Hola, {user?.nombre} ({user?.rol})</Text>
-      <Button mode="outlined" onPress={logout} style={{ marginTop: 20 }}>
-        Cerrar Sesión
-      </Button>
+    <View style={styles.mainWrapper}>
+      <View style={styles.container}>
+        
+        {/* boton para Añadir */}
+        <Button 
+          mode="contained" 
+          icon="plus" 
+          onPress={() => abrirFormulario()} 
+          style={styles.addButton}
+        >
+          Nuevo Recurso Educativo
+        </Button>
+        
+        <Text variant="titleMedium" style={styles.listTitle}>
+          Lista de Recursos Didácticos
+        </Text>
+
+        {/* lista sencilla con botones para Edicion y Borrado */}
+        <FlatList
+          data={recursos}
+          keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={{ paddingBottom: 20 }}
+          renderItem={({ item }) => (
+            <Card style={styles.cardItem}>
+              <Card.Title
+                title={item.titulo}
+                subtitle={`Tipo: ${item.tipo} | Rating actual: ⭐ ${item.rating == 0 ? 'N/A' : item.rating}`}
+                
+                left={(props) => (
+                  <MaterialCommunityIcons 
+                    name={item.tipo?.toLowerCase() === 'video' ? "video" : "book-open-variant"} 
+                    size={26} 
+                    color="#6200ee" 
+                    style={{ marginTop: 10, marginLeft: 5 }}
+                  />
+                )}
+
+                right={(props) => (
+                  <View style={styles.actionRow}>
+                    <IconButton
+                      icon="pencil"
+                      iconColor="#3498db"
+                      size={22}
+                      onPress={() => abrirFormulario(item)}
+                    />
+                    <IconButton
+                      icon="delete"
+                      iconColor="#e74c3c"
+                      size={22}
+                      onPress={() => handleEliminar(item.id, item.titulo)}
+                    />
+                  </View>
+                )}
+              />
+            </Card> 
+          )}
+        />
+      </View>
     </View>
   );
-}
-const styles = StyleSheet.create({
-  container: { 
-    flex: 1, 
-    justifyContent: 'center',
-    alignItems: 'center' }
-});
+
+        
+      
