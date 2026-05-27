@@ -165,15 +165,22 @@ export default function HomeScreen() {
                 </Card.Content>
 
                 <Card.Actions>
-                  <IconButton
-                    icon={esFav ? "heart" : "heart-outline"}
-                    iconColor={esFav ? "red" : "gray"}
-                    size={24}
-                    onPress={() => toggleFavorito(item.id)}
-                  />
-                  <Button mode="outlined" onPress={() => abrirDialogoCalificar(item)}>
-                    Calificar
-                  </Button>
+                  {/* interacciones solo para el Estudiante */}
+                  {user?.rol === 'Estudiante' && (
+                    <>
+                      <IconButton
+                        icon={esFav ? "heart" : "heart-outline"}
+                        iconColor={esFav ? "red" : "gray"}
+                        size={24}
+                        onPress={() => toggleFavorito(item.id)}
+                      />
+                      <Button mode="outlined" onPress={() => abrirDialogoCalificar(item)}>
+                        Calificar
+                      </Button>
+                    </>
+                  )}
+
+                  {/* Acción disponible para ambos roles */}
                   <Button mode="contained" onPress={() => Linking.openURL(item.enlace)}>
                     Ver Recurso
                   </Button>
@@ -198,7 +205,7 @@ export default function HomeScreen() {
                 {[1, 2, 3, 4, 5].map((estrella) => (
                   <View key={estrella} style={styles.dialogRadioItem}>
                     <RadioButton value={estrella} />
-                    <Text>{estrella} {estrella === 1 ? 'Estreha' : 'Estrellas'}</Text>
+                    <Text>{estrella} {estrella === 1 ? 'Estrella' : 'Estrellas'}</Text>
                   </View>
                 ))}
               </RadioButton.Group>
@@ -215,11 +222,26 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 15, backgroundColor: '#f5f5f5' },
+  mainWrapper: { 
+    flex: 1, 
+    backgroundColor: '#eaeaea' 
+  },
+
+  container: { 
+    flex: 1, 
+    padding: 15, 
+    backgroundColor: '#f5f5f5', 
+    ...Platform.select({ 
+      web: {
+        maxWidth: 750,
+        width: '100%',
+        alignSelf: 'center',
+        boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
+      }
+    }),
+  },
+  
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12, marginTop: 5 },
-  welcomeText: { fontWeight: 'bold', color: '#6200ee' },
-  logoutButton: { margin: 0 },
   searchBar: { marginBottom: 10, backgroundColor: '#fff' },
   chipContainer: { flexDirection: 'row', marginBottom: 15 },
   chip: { marginRight: 8 },
