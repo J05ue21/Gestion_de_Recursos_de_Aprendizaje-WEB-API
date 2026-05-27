@@ -1,6 +1,7 @@
+//import React from 'react';
 import React, { useState, useCallback } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, Button } from 'react-native-paper';
+import { StyleSheet, View, FlatList, ScrollView, Platform, Alert } from 'react-native';
+import { Text, Card, Button, TextInput, RadioButton, ActivityIndicator, IconButton, Portal, Dialog } from 'react-native-paper';
 import { useFocusEffect } from '@react-navigation/native';
 import api from '../services/api'
 
@@ -132,6 +133,16 @@ export default function AdminScreen() {
           );
         }
       };
+
+      //mientras carga...
+      if (loading) {
+        return (
+          <View style={styles.center}>
+            <ActivityIndicator size="large" color="#6200ee" />
+            <Text style={{ marginTop: 10 }}>Cargando panel de gestión...</Text>
+          </View>
+        );
+      }
 
 
 
