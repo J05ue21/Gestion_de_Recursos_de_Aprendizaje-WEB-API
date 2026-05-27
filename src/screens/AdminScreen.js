@@ -103,6 +103,38 @@ export default function AdminScreen() {
         }
       };
 
+      //Eliminando un recurso
+      const handleEliminar = async (id, tituloRecurso) => {
+        const borrarElemento = async () => {
+          try {
+            await api.delete(`/recursos/${id}`);
+            fetchRecursos();  // funcion para refrescar listado de API
+          } 
+          catch (error) {
+            console.error("Error al Eliminar recurso:", error);
+          }
+        };
+
+        //alerta segun plataforma
+        if (Platform.OS === 'web') {
+          if (window.confirm(`¿Estás seguro de que deseas eliminar el recurso: "${tituloRecurso}"?`)) {
+            borrarElemento();
+          }
+        } 
+        else {
+          Alert.alert(
+            "Eliminar Recurso",
+            `¿Estás seguro de eliminar "${tituloRecurso}"?`,
+            [
+              { text: "Cancelar", style: "cancel" }, //boton cancel no ejecuta nada
+              { text: "Eliminar", style: "destructive", onPress: borrarElemento }
+            ]
+          );
+        }
+      };
+
+
+
 
   //--------------------------------------------------------------
   return (
