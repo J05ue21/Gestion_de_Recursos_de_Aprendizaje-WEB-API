@@ -61,6 +61,47 @@ export default function AdminScreen() {
       setVisibleDialog(true);
     };
 
+    //para Guardar --POST o PUT
+    const handleGuardar = async () => {
+      // si algún campo o todos están vacios, se alerta según Plataforma (alert->Web // Alert.alert->Movil)
+      if (!titulo.trim() || !descripcion.trim() || !enlace.trim()) {
+        if (Platform.OS === 'web') {
+          alert("Por favor completa los campos obligatorios (Título, Descripción y Enlace)");
+        } 
+        else {
+          Alert.alert("Campos incompletos", "Por favor completa los campos obligatorios.");
+        }
+        return;
+      }
+
+      //si no inserta una imagen de referencia, se deja una por defecto
+      const urlImagen = imagen.trim() ? imagen : 'https://png.pngtree.com/png-vector/20241225/ourmid/pngtree-smart-education-apps-for-seamless-virtual-learning-png-image_14889552.png';
+
+      const datosRecurso = {
+      titulo,
+      descripcion,
+      imagen: urlImagen,
+      tipo,
+      enlace,
+      // como es Nuevo, se agrega el campo rating y se inicializa en 0, pero si Editar, no se modifica su valor
+      ...(editandoId ? {} : { rating: 0 }) 
+    };
+
+    try {
+          if (editandoId) {
+            // Si estamos editando, entonces -> PUT{id}
+            await api.put(`/recursos/${editandoId}`, datosRecurso);
+          } 
+          else {
+            // de lo contrario, estamos Creando -> POST
+            await api.post('/recursos', datosRecurso);
+          }
+          setVisibleDialog(false);
+          fetchRecursos(); // obtiene nuevamente los recusrsos para mantenerlos listos y mostrarlos
+        } catch (error) {
+          console.error("Error al guardar el recurso:", error);
+        }
+      };
 
 
   //--------------------------------------------------------------
