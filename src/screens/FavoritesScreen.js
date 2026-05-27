@@ -85,7 +85,7 @@ export default function FavoritesScreen() {
         <View style={styles.container}>
           
           <Text variant="headlineSmall" style={styles.titlePage}>
-            Mis Recursos Guardados ⭐
+            ⭐ Mis Favoritos guardados
           </Text>
   
           <FlatList
@@ -98,8 +98,13 @@ export default function FavoritesScreen() {
                 
                 <Card.Content style={styles.cardContent}>
                   <View style={styles.rowJustified}>
-                    <Text variant="titleMedium" style={styles.cardTitle}>{item.titulo}</Text>
-                    <Text style={styles.ratingText}>⭐ {item.rating == 0 ? 'N/A' : item.rating}</Text>
+                    <Text variant="titleMedium" style={styles.cardTitle}>
+                      {item.titulo}
+                    </Text>
+                  
+                    <Text style={styles.ratingText}>⭐
+                      {item.rating == 0 ? 'N/A' : item.rating}
+                    </Text>
                   </View>
                   <Text variant="bodyMedium" style={styles.description}>{item.descripcion}</Text>
                 </Card.Content>
@@ -131,8 +136,36 @@ export default function FavoritesScreen() {
   }
 
 const styles = StyleSheet.create({
-  container:{ 
+  mainWrapper: { 
     flex: 1, 
-    justifyContent: 'center',
-    alignItems: 'center' }
-  });
+    backgroundColor: '#eaeaea' 
+  },
+  container: { 
+    flex: 1, 
+    padding: 15, 
+    backgroundColor: '#f5f5f5',
+    ...Platform.select({
+      web: {
+        maxWidth: 750,
+        width: '100%',
+        alignSelf: 'center',
+        boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
+      }
+    })
+  },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  titlePage: {
+    fontWeight: 'bold',
+    color: '#6200ee',
+    marginBottom: 15,
+    textAlign: 'center'
+  },
+  card: { marginBottom: 15, backgroundColor: '#fff', elevation: 2 },
+  cardContent: { marginTop: 10 },
+  rowJustified: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  cardTitle: { fontWeight: 'bold', maxWidth: '80%' },
+  ratingText: { fontWeight: 'bold', color: '#666' },
+  description: { color: '#555', marginTop: 5 },
+  emptyContainer: { alignItems: 'center', marginTop: 40 },
+  emptyText: { textAlign: 'center', color: 'gray', fontSize: 15 }
+});
