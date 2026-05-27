@@ -7,7 +7,7 @@ import { AuthContext } from '../context/AuthContext'; // para verificar autentic
 import api from '../services/api';
 
 export default function HomeScreen() {
-  const { user, logout } = useContext(AuthContext); //obtiene el usuario y sus propiedades
+  const { user } = useContext(AuthContext); //obtiene el usuario y sus propiedades
   const [recursos, setRecursos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -97,7 +97,7 @@ export default function HomeScreen() {
     return cumpleBusqueda && cumpleFiltro;
   });
 
-  if (loading) {
+  if (loading) {  //animacion breve mientras carga datos para evitar ansiedad del usuario
     return (
       <View style={styles.center}>
         <ActivityIndicator size="large" color="#6200ee" />
