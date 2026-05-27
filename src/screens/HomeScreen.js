@@ -4,6 +4,7 @@ import { Text, Card, Button, TextInput, Chip, ActivityIndicator, IconButton, Por
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '../context/AuthContext'; // para verificar autenticacion
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'; 
 import api from '../services/api';
 
 export default function HomeScreen() {
@@ -129,9 +130,8 @@ export default function HomeScreen() {
               key={tipo}
               selected={filtroTipo === tipo}
               onPress={() => setFiltroTipo(tipo)}
-              style={styles.chip}
-              selectedColor="#000000"
-              background={filtroTipo === tipo ? { color: '#6700f8' } : undefined}
+              style={[styles.chip, filtroTipo === tipo && { backgroundColor: '#6200ee' }]}
+              selectedColor={filtroTipo === tipo ? '#fff' : '#6200ee'}
             >
               {tipo}
             </Chip>
@@ -145,6 +145,7 @@ export default function HomeScreen() {
           contentContainerStyle={{ paddingBottom: 20 }}
           renderItem={({ item }) => {
             const esFav = favoritosIds.includes(item.id);
+            
             return (
               <Card style={styles.card}>
                 <Card.Cover source={{ uri: item.imagen || 'https://via.placeholder.com/150' }} />
@@ -157,7 +158,7 @@ export default function HomeScreen() {
                   <Text variant="bodyMedium" style={styles.description}>{item.descripcion}</Text>
                   
                   <View style={styles.ratingRow}>
-                    <IconButton icon="star" iconColor="#f1c40f" size={20} style={{ margin: 0 }} />
+                    <MaterialCommunityIcons name="star" color="#f1c40f" size={20} />
                     <Text style={styles.ratingText}>
                       {item.rating == 0 ? 'Sin calificaciones' : `${item.rating} / 5.0`}
                     </Text>
@@ -167,17 +168,17 @@ export default function HomeScreen() {
                 <Card.Actions>
                   {/* interacciones solo para el Estudiante */}
                   {user?.rol === 'Estudiante' && (
-                    <>
-                      <IconButton
-                        icon={esFav ? "heart" : "heart-outline"}
-                        iconColor={esFav ? "red" : "gray"}
-                        size={24}
-                        onPress={() => toggleFavorito(item.id)}
-                      />
-                      <Button mode="outlined" onPress={() => abrirDialogoCalificar(item)}>
-                        Calificar
-                      </Button>
-                    </>
+                    <IconButton
+                      icon={esFav ? "heart" : "heart-outline"}
+                      iconColor={esFav ? "red" : "gray"}
+                      size={24}
+                      onPress={() => toggleFavorito(item.id)}
+                    />
+                  )}
+                  {user?.rol === 'Estudiante' && (
+                    <Button mode="outlined" onPress={() => abrirDialogoCalificar(item)}>
+                      Calificar
+                    </Button>
                   )}
 
                   {/* Acción disponible para ambos roles */}
@@ -242,7 +243,7 @@ const styles = StyleSheet.create({
   },
   
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  searchBar: { marginBottom: 10, backgroundColor: '#fff' },
+  searchBar: { marginBottom: 10, backgroundColor: '#fff', height: 45},
   chipContainer: { flexDirection: 'row', marginBottom: 15 },
   chip: { marginRight: 8 },
   card: { marginBottom: 15, backgroundColor: '#fff', elevation: 2 },
