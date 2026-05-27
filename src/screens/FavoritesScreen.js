@@ -81,15 +81,55 @@ export default function FavoritesScreen() {
 
   //-----------------------------------------------------------------------------------
   return (
-    <View style={styles.container}>
-      <Text variant="headlineMedium">Mis Favoritos</Text>
-      <Text>Hola, {user?.nombre} ({user?.rol})</Text>
-      <Button mode="outlined" onPress={logout} style={{ marginTop: 20 }}>
-        Cerrar Sesión
-      </Button>
-    </View>
-  );
-}
+      <View style={styles.mainWrapper}>
+        <View style={styles.container}>
+          
+          <Text variant="headlineSmall" style={styles.titlePage}>
+            Mis Recursos Guardados ⭐
+          </Text>
+  
+          <FlatList
+            data={favoritos}
+            keyExtractor={(item) => item.id.toString()}
+            contentContainerStyle={{ paddingBottom: 20 }}
+            renderItem={({ item }) => (
+              <Card style={styles.card}>
+                <Card.Cover source={{ uri: item.imagen || 'https://cdni.iconscout.com/illustration/premium/thumb/error-de-carga-illustration-svg-download-png-8257063.png' }} />
+                
+                <Card.Content style={styles.cardContent}>
+                  <View style={styles.rowJustified}>
+                    <Text variant="titleMedium" style={styles.cardTitle}>{item.titulo}</Text>
+                    <Text style={styles.ratingText}>⭐ {item.rating == 0 ? 'N/A' : item.rating}</Text>
+                  </View>
+                  <Text variant="bodyMedium" style={styles.description}>{item.descripcion}</Text>
+                </Card.Content>
+  
+                <Card.Actions>
+                  {/* boton para funcion de quitar de favoritos */}
+                  <IconButton
+                    icon="heart"
+                    iconColor="red"
+                    size={24}
+                    onPress={() => removerFavorito(item.id)}
+                  />
+  
+                  <Button mode="contained" onPress={() => Linking.openURL(item.enlace)}>
+                    Ver Recurso
+                  </Button>
+                </Card.Actions>
+              </Card>
+            )}
+            ListEmptyComponent={
+              <View style={styles.emptyContainer}>
+                <Text style={styles.emptyText}>Aún no has agregado favoritos</Text>
+              </View>
+            }
+          />
+        </View>
+      </View>
+    );
+  }
+
 const styles = StyleSheet.create({
   container:{ 
     flex: 1, 
