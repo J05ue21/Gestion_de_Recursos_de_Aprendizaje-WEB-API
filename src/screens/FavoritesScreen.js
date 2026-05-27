@@ -1,13 +1,12 @@
 //import React from 'react';
 import React, { useState, useCallback, useContext } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, Button } from 'react-native-paper';
-import { AuthContext } from '../context/AuthContext';
+import { StyleSheet, View, FlatList, Linking, Platform } from 'react-native';
+import { Text, Card, Button, ActivityIndicator, IconButton } from 'react-native-paper';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthContext } from '../context/AuthContext';
 import { useFocusEffect } from '@react-navigation/native';
 import api from '../services/api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 
 export default function FavoritesScreen() {
   const { user } = useContext(AuthContext);
@@ -70,6 +69,15 @@ export default function FavoritesScreen() {
       console.error("Hubo un error al quitar el favorito:", error);
     }
   };
+
+  if (loading) {  //indicador de espera mientras carga
+      return (
+        <View style={styles.center}>
+          <ActivityIndicator size="large" color="#6200ee" />
+          <Text style={{ marginTop: 10 }}>Cargando tus favoritos...</Text>
+        </View>
+      );
+    }
 
   //-----------------------------------------------------------------------------------
   return (
