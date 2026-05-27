@@ -38,7 +38,31 @@ export default function AdminScreen() {
           fetchRecursos();
         }, [])
       );
-      
+
+    // mostrar un formulario en blanco para agregar Nuevo o 
+    // mostrarlo con campos completados para Editarlo 
+    const abrirFormulario = (recurso = null) => {
+      if (recurso) {
+        setEditandoId(recurso.id);
+        setTitulo(recurso.titulo || '');
+        setDescripcion(recurso.descripcion || '');
+        setImagen(recurso.imagen || '');
+        setTipo(recurso.tipo || 'Libro');
+        setEnlace(recurso.enlace || '');
+      }
+      else {
+        setEditandoId(null);
+        setTitulo('');
+        setDescripcion('');
+        setImagen('');
+        setTipo('Libro');
+        setEnlace('');
+      }
+      setVisibleDialog(true);
+    };
+
+
+
   //--------------------------------------------------------------
   return (
     <View style={styles.container}>
