@@ -363,7 +363,8 @@ export const styles = StyleSheet.create({
   radioOption: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginRight: 30
+    marginRight: 30,
+    marginVertical: Platform.OS === 'web' ? 0 : 4 //para darle separacion entre cada RadioButton
   },
   dialogTitle: {
     textAlign: 'center',
