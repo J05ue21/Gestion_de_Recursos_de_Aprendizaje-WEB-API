@@ -298,5 +298,86 @@ export default function AdminScreen() {
   );
 }
 
+export const styles = StyleSheet.create({
+  mainWrapper: { 
+    flex: 1, 
+    backgroundColor: '#eaeaea' 
+  },
+  container: { 
+    flex: 1, 
+    padding: 15, 
+    backgroundColor: '#f5f5f5',
+    ...Platform.select({
+      web: {
+        maxWidth: 750,
+        width: '100%',
+        alignSelf: 'center',
+        boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
+      }
+    })
+  },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  addButton: {
+    marginVertical: 10,
+    backgroundColor: '#6200ee',
+    paddingVertical: 4
+  },
+  listTitle: {
+    fontWeight: 'bold',
+    color: '#555',
+    marginVertical: 10,
+    marginLeft: 5
+  },
+  cardItem: {
+    marginBottom: 10,
+    backgroundColor: '#fff',
+    elevation: 1
+  },
+  actionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 5
+  },
+  emptyText: {
+    textAlign: 'center',
+    marginTop: 40,
+    color: 'gray'
+  },
+  input: {
+    marginBottom: 12,
+    backgroundColor: '#fff'
+  },
+  labelRadio: {
+    marginTop: 8,
+    fontWeight: 'bold',
+    color: '#666'
+  },
+  radioRow: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    marginTop: 5,
+    marginBottom: 10
+  },
+  radioOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 30
+  },
+  dialogTitle: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    color: '#6200ee'
+  },
+  dialogSize: {
+    ...Platform.select({
+      web: {
+        maxWidth: 550,
+        alignSelf: 'center',
+        width: '90%'
+      }
+    })
+  }
+});
+
         
       
