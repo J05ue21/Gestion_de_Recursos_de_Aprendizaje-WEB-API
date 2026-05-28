@@ -4,7 +4,7 @@ import { StyleSheet, View, FlatList, ScrollView, Platform, Alert } from 'react-n
 import { Text, Card, Button, TextInput, RadioButton, ActivityIndicator, IconButton, Portal, Dialog } from 'react-native-paper';
 import { useFocusEffect } from '@react-navigation/native';
 import api from '../services/api'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 export default function AdminScreen() {
   const [recursos, setRecursos] = useState([]);
