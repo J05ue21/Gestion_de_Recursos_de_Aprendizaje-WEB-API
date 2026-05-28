@@ -1,7 +1,8 @@
 import React, { useState, useContext } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { TextInput, Button, Text } from 'react-native-paper';
 import { AuthContext } from '../context/AuthContext';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import api from '../services/api';
 
 export default function LoginScreen({ navigation }) {
@@ -50,45 +51,77 @@ export default function LoginScreen({ navigation }) {
   };  //fin handleLogin----------------------------------
 
   return (
-    <View style={styles.container}>
-      <Text variant="headlineMedium" style={styles.title}>Iniciar Sesión</Text>
+    <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+        style={styles.keyboardView}
+    >
+        <ScrollView 
+            style={styles.scrollView}
+            contentContainerStyle={styles.container}
+            keyboardShouldPersistTaps="handled"
+        >
+            {/* contenedor principal Adaptativo */}
+            <View style={styles.mainLayout}>
+                
+                {/* el Logo en la columna izquierda en Web, en movil se muestra arriba */}
+                <View style={styles.logoSection}>
+                    <View style={styles.iconCircle}>
+                        <MaterialCommunityIcons name="school" size={65} color="#6200ee" />
+                    </View>
+                    <Text variant="titleLarge" style={styles.logoText}>RECURSOS EDUCATIVOS</Text>
+                </View>
 
-      {error ? <Text style={styles.errorText}>{error}</Text> : null}
+                {/* el Formulario en la columna derecha en Web, en movil se muestra abajo */}
+                <View style={styles.formSection}>
+                    <Text variant="headlineMedium" style={styles.title}>
+                        Iniciar Sesión
+                    </Text>
 
-      <TextInput
-        label="Correo Electrónico"
-        value={email}
-        onChangeText={setEmail}
-        mode="outlined"
-        keyboardType="email-address"
-        autoCapitalize="none"
-        style={styles.input}
-      />
+                    {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
-      <TextInput
-        label="Contraseña"
-        value={password}
-        onChangeText={setPassword}
-        mode="outlined"
-        secureTextEntry={secureText}
-        right={<TextInput.Icon icon={secureText ? "eye" : "eye-off"} onPress={() => setSecureText(!secureText)} />}
-        style={styles.input}
-      />
+                    <TextInput
+                        label="Correo Electrónico"
+                        value={email}
+                        onChangeText={setEmail}
+                        mode="outlined"
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                        style={styles.input}
+                    />
 
-      <Button 
-        mode="contained" 
-        onPress={handleLogin} 
-        loading={loading}
-        disabled={loading}
-        style={styles.button}
-      >
-        Ingresar
-      </Button>
+                    <TextInput
+                        label="Contraseña"
+                        value={password}
+                        onChangeText={setPassword}
+                        mode="outlined"
+                        secureTextEntry={secureText}
+                        right={
+                          <TextInput.Icon 
+                            icon={secureText ? "eye" : "eye-off"} 
+                            onPress={() => setSecureText(!secureText)} 
+                          />
+                        }
+                        style={styles.input}
+                    />
 
-      <Button mode="text" onPress={() => navigation.navigate('Register')}>
-        ¿No tienes cuenta? Regístrate aquí
-      </Button>
-    </View>
+                    <Button 
+                        mode="contained" 
+                        onPress={handleLogin} 
+                        loading={loading}
+                        disabled={loading}
+                        style={styles.button}
+                    >
+                        Ingresar
+                    </Button>
+
+                    <Button mode="text" onPress={() => navigation.navigate('Register')}>
+                        ¿No tienes cuenta? Regístrate aquí
+                    </Button>
+                </View>
+
+            </View>
+        </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
