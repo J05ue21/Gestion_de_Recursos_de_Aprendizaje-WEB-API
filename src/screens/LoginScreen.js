@@ -126,29 +126,95 @@ export default function LoginScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  keyboardView: {
+    flex: 1,
+    backgroundColor: '#fff'
+  },
+  scrollView: {
+    flex: 1,
+    width: '100%',
+  },
   container: { 
-    flex: 1, 
-    padding: 20, 
+    flexGrow: 1, 
+    padding: 24,
+    alignItems: 'center',
     justifyContent: 'center', 
-    backgroundColor: '#fff' },
+    backgroundColor: '#fff' 
+  },
 
-  title: { 
-    textAlign: 'center', 
-    marginBottom: 25, 
-    fontWeight: 'bold', 
-    color: '#6200ee' },
-
-  input: { 
-    marginBottom: 15 },
-
-  button: { 
-    marginTop: 10, 
-    marginBottom: 10, 
-    paddingVertical: 5 },
-
-  errorText: { 
-    color: 'red', 
-    textAlign: 'center', 
-    marginBottom: 15, 
-    fontWeight: 'bold' }
+  mainLayout: {
+    flexDirection: Platform.OS === 'web' ? 'row' : 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    ...Platform.select({
+      web: {
+        maxWidth: 850,
+        paddingVertical: 10,
+      }
+    })
+  },
+  logoSection: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...Platform.select({
+      web: {
+        flex: 1,
+        marginRight: 50, 
+        marginBottom: 0,
+      },
+      default: {
+        marginBottom: 25,
+        marginTop: Platform.OS === 'ios' ? 0 : 20,
+      }
+    })
+  },
+  formSection: {
+    width: '100%',
+    ...Platform.select({
+      web: {
+        flex: 1.2, 
+      }
+    })
+  },
+  iconCircle: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: '#f3e8ff', 
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  logoText: {
+    fontWeight: 'bold',
+    color: '#6200ee',
+    letterSpacing: 1.5,
+    textAlign: 'center'
+  },
+  title: {
+    textAlign: Platform.OS === 'web' ? 'left' : 'center',
+    marginBottom: 25,
+    fontWeight: 'bold',
+    color: '#333'
+  },
+  input: {
+    marginBottom: 12 
+  },
+  button: {
+    marginTop: 10,
+    marginBottom: 5,
+    paddingVertical: 4 
+  },
+  errorText: {
+    color: 'red',
+    textAlign: 'center',
+    marginBottom: 15,
+    fontWeight: 'bold' 
+  }
 });
