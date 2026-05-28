@@ -12,7 +12,7 @@ import FavoritesScreen from '../screens/FavoritesScreen';
 import AdminScreen from '../screens/AdminScreen';
 
 // para los iconos React native Paper de Vector Icons
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
