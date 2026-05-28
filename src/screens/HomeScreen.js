@@ -4,7 +4,7 @@ import { Text, Card, Button, TextInput, Chip, ActivityIndicator, IconButton, Por
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '../context/AuthContext'; // para verificar autenticacion
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'; 
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import api from '../services/api';
 
 export default function HomeScreen() {
@@ -125,7 +125,7 @@ export default function HomeScreen() {
 
         {/* selector de categorias utilizando 'Chips' de react-native-paper*/}
         <View style={styles.chipContainer}>
-          {['Todos', 'Libro', 'Video', 'Artículo'].map((tipo) => (
+          {['Todos', 'Libro', 'Video', 'Articulo'].map((tipo) => (
             <Chip
               key={tipo}
               selected={filtroTipo === tipo}
