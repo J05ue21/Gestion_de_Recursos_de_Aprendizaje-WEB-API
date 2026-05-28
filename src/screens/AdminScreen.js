@@ -176,14 +176,25 @@ export default function AdminScreen() {
                 title={item.titulo}
                 subtitle={`Tipo: ${item.tipo} | Rating actual: ⭐ ${item.rating == 0 ? 'N/A' : item.rating}`}
                 
-                left={(props) => (
-                  <MaterialCommunityIcons 
-                    name={item.tipo?.toLowerCase() === 'video' ? "video" : "book-open-variant"} 
-                    size={26} 
-                    color="#6200ee" 
-                    style={{ marginTop: 10, marginLeft: 5 }}
-                  />
-                )}
+                left={(props) => {
+                  let iconName = "book-open-variant"; // icono predeterminado
+
+                  if(item.tipo?.toLowerCase() === 'video'){
+                    iconName = "video";
+                  }
+                  else if (item.tipo?.toLowerCase() === 'articulo') {
+                    iconName = "file-document-outline"  // el icono para un articulo
+                  }
+
+                  return (
+                    <MaterialCommunityIcons 
+                      name={iconName} 
+                      size={26} 
+                      color="#6200ee" 
+                      style={{ marginTop: 10, marginLeft: 5 }}
+                    />
+                  );
+                }}
 
                 right={(props) => (
                   <View style={styles.actionRow}>
