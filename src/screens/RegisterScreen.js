@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { TextInput, Button, Text, HelperText, RadioButton } from 'react-native-paper';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import api from '../services/api';
 
 export default function RegisterScreen({ navigation }) {
@@ -77,120 +78,211 @@ export default function RegisterScreen({ navigation }) {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-        <Text variant="headlineMedium" style={styles.title}>
-            Crear Cuenta
-        </Text>
-
-        {errorGeneral ? <Text style={styles.errorText}>{errorGeneral}</Text> : null}
-
-        <TextInput
-            label="Nombre Completo"
-            value={nombre}
-            onChangeText={setNombre}
-            mode="outlined"
-            style={styles.input}
-        />
-
-        <TextInput
-            label="Correo Electrónico"
-            value={email}
-            onChangeText={setEmail}
-            mode="outlined"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            style={styles.input}
-        />
-
-        <TextInput
-            label="Contraseña"
-            value={password}
-            onChangeText={setPassword}
-            mode="outlined"
-            secureTextEntry={secureText}
-            right={<TextInput.Icon icon={secureText ? "eye" : "eye-off"} onPress={() => setSecureText(!secureText)} />}
-            style={styles.input}
-        />
-
-        {/* Indicadores visuales de requisitos de contraseña */}
-        <HelperText type="info" visible={true} style={styles.helpText}>
-            * Mínimo 12 caracteres, incluir mayúscula, minúscula, número y carácter especial (!@#$%^&*).
-        </HelperText>
-
-        {/* para seleccionar el rol */}
-
-        <Text variant="titleMedium" style={styles.labelRol}>Selecciona tu Rol:</Text>
-        <RadioButton.Group onValueChange={value => setRol(value)} value={rol}>
-            <View style={styles.radioContainer}>
-            <View style={styles.radioItem}>
-                <RadioButton value="Estudiante" />
-                <Text>Estudiante</Text>
-            </View>
-            <View style={styles.radioItem}>
-                <RadioButton value="Docente" />
-                <Text>Docente</Text>
-            </View>
-            </View>
-        </RadioButton.Group>
-
-        <Button 
-            mode="contained" 
-            onPress={handleRegister} 
-            loading={loading} 
-            disabled={loading}
-            style={styles.button}
+    <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+        style={styles.keyboardView}
+    >
+        <ScrollView 
+            style={styles.scrollView}
+            contentContainerStyle={styles.container}
+            keyboardShouldPersistTaps="handled"
         >
-            Registrarse
-        </Button>
+            {/* contenedor principal Adaptativo */}
+            <View style={styles.mainLayout}>
+                
+                {/* el Logo en la columna izquierda en Web, en movil se muestra arriba */}
+                <View style={styles.logoSection}>
+                    <View style={styles.iconCircle}>
+                        <MaterialCommunityIcons name="school" size={65} color="#6200ee" />
+                    </View>
+                    <Text variant="titleLarge" style={styles.logoText}>RECURSOS EDUCATIVOS</Text>
+                </View>
 
-        <Button mode="text" onPress={() => navigation.navigate('Login')}>
-            ¿Ya tienes cuenta? Inicia Sesión
-        </Button>
-    </ScrollView>
-    );
+                {/* el Formulario en la columna derecha en Web, en movil se muestra abajo */}
+                <View style={styles.formSection}>
+                    <Text variant="headlineMedium" style={styles.title}>
+                        Crear Cuenta
+                    </Text>
+
+                    {errorGeneral ? <Text style={styles.errorText}>{errorGeneral}</Text> : null}
+
+                    <TextInput
+                        label="Nombre Completo"
+                        value={nombre}
+                        onChangeText={setNombre}
+                        mode="outlined"
+                        style={styles.input}
+                    />
+
+                    <TextInput
+                        label="Correo Electrónico"
+                        value={email}
+                        onChangeText={setEmail}
+                        mode="outlined"
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                        style={styles.input}
+                    />
+
+                    <TextInput
+                        label="Contraseña"
+                        value={password}
+                        onChangeText={setPassword}
+                        mode="outlined"
+                        secureTextEntry={secureText}
+                        right={<TextInput.Icon icon={secureText ? "eye" : "eye-off"} onPress={() => setSecureText(!secureText)} />}
+                        style={styles.input}
+                    />
+
+                    <HelperText type="info" visible={true} style={styles.helpText}>
+                        * Mínimo 12 caracteres, incluir mayúscula, minúscula, número y carácter especial (!@#$%^&*).
+                    </HelperText>
+
+                    <Text variant="titleMedium" style={styles.labelRol}>Selecciona tu Rol:</Text>
+                    <RadioButton.Group onValueChange={value => setRol(value)} value={rol}>
+                        <View style={styles.radioContainer}>
+                            <View style={styles.radioItem}>
+                                <RadioButton value="Estudiante" />
+                                <Text>Estudiante</Text>
+                            </View>
+                            <View style={styles.radioItem}>
+                                <RadioButton value="Docente" />
+                                <Text>Docente</Text>
+                            </View>
+                        </View>
+                    </RadioButton.Group>
+
+                    <Button 
+                        mode="contained" 
+                        onPress={handleRegister} 
+                        loading={loading} 
+                        disabled={loading}
+                        style={styles.button}
+                    >
+                        Registrarse
+                    </Button>
+
+                    <Button mode="text" onPress={() => navigation.navigate('Login')}>
+                        ¿Ya tienes cuenta? Inicia Sesión
+                    </Button>
+                </View>
+
+            </View>
+        </ScrollView>
+    </KeyboardAvoidingView>
+  );
 }
   
-  const styles = StyleSheet.create({
+const styles = StyleSheet.create({
+  keyboardView: {
+    flex: 1,
+    backgroundColor: '#fff'
+  },
+  scrollView: {
+    flex: 1,
+    width: '100%',
+  },
   container: { 
-    padding: 20, 
+    padding: 24, 
     justifyContent: 'center',
+    alignItems: 'center',
     flexGrow: 1,
-    backgroundColor: '#fff' },
-
+    backgroundColor: '#fff',
+  },
+    // Contenedor dinamico: en Web usa filas y en móvil se apila en columnas
+  mainLayout: {
+    flexDirection: Platform.OS === 'web' ? 'row' : 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    ...Platform.select({
+      web: {
+        maxWidth: 850,
+        paddingVertical: 10,
+      }
+    })
+  },
+  // manejo del espacio del logo
+  logoSection: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...Platform.select({
+      web: {
+        flex: 1,
+        marginRight: 50,    //separacion respoecto al formulario
+        marginBottom: 0,
+      },
+      default: {
+        marginBottom: 20,
+        marginTop: Platform.OS === 'ios' ? 0 : 20,
+      }
+    })
+  },
+  // seccion del formulario
+  formSection: {
+    width: '100%',
+    ...Platform.select({
+      web: {
+        flex: 1.2,
+      }
+    })
+  },
+  iconCircle: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: '#f3e8ff', 
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  logoText: {
+    fontWeight: 'bold',
+    color: '#6200ee',
+    letterSpacing: 1.5,
+    textAlign: 'center'
+  },
   title: {
-    textAlign: 'center',
+    textAlign: Platform.OS === 'web' ? 'left' : 'center', // Alineado a la izquierda en Web
     marginBottom: 20,
     fontWeight: 'bold',
-    color: '#6200ee' },
-
+    color: '#333'
+  },
   input: {
-    marginBottom: 10 },
-
+    marginBottom: 10 
+  },
   helpText: {
-    marginBottom: 15,
-    lineHeight: 16 },
-
+    marginBottom: 10,
+    lineHeight: 14 
+  },
   labelRol: {
-    marginTop: 10,
-    marginBottom: 5 },
-
+    marginTop: 5,
+    marginBottom: 5,
+    fontWeight: '600'
+  },
   radioContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: 20 },
-
+    marginBottom: 20 
+  },
   radioItem: {
     flexDirection: 'row',
-    alignItems: 'center' },
-
+    alignItems: 'center' 
+  },
   button: {
-    marginTop: 10,
-    marginBottom: 10,
-    paddingVertical: 5 },
-
+    marginTop: 5,
+    marginBottom: 5,
+    paddingVertical: 3 
+  },
   errorText: {
     color: 'red',
     textAlign: 'center',
     marginBottom: 15,
-    fontWeight: 'bold' }
+    fontWeight: 'bold' 
+  }
 });
