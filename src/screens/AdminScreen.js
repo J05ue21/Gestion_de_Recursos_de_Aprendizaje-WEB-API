@@ -353,7 +353,9 @@ export const styles = StyleSheet.create({
     color: '#666'
   },
   radioRow: {
-    flexDirection: 'row',
+    flexDirection: Platform.OS === 'web' ? 'row' : 'column',  //los RadioButton se muestran en una sola fila 
+                                                              // si es version WEB; si es pantalla Movil,
+                                                              // se muestran en columnas (cada uno en su propia fila)
     justifyContent: 'flex-start',
     marginTop: 5,
     marginBottom: 10
