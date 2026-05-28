@@ -125,7 +125,7 @@ export default function HomeScreen() {
 
         {/* selector de categorias utilizando 'Chips' de react-native-paper*/}
         <View style={styles.chipContainer}>
-          {['Todos', 'Libro', 'Video', 'Artículo', 'Tutorial'].map((tipo) => (
+          {['Todos', 'Libro', 'Video', 'Artículo'].map((tipo) => (
             <Chip
               key={tipo}
               selected={filtroTipo === tipo}
@@ -148,7 +148,7 @@ export default function HomeScreen() {
             
             return (
               <Card style={styles.card}>
-                <Card.Cover source={{ uri: item.imagen || 'https://via.placeholder.com/150' }} />
+                <Card.Cover source={{ uri: item.imagen || 'https://png.pngtree.com/png-vector/20241225/ourmid/pngtree-smart-education-apps-for-seamless-virtual-learning-png-image_14889552.png' }} />
                 
                 <Card.Content style={styles.cardContent}>
                   <View style={styles.rowJustified}>
