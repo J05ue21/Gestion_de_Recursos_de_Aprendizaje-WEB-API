@@ -1,7 +1,9 @@
 # 💻🖥️📱 Sistema de Gestión de Recursos de aprendizaje
 Proyecto creado con React Native.
 La aplicacion hace uso de una API dinamica creada con MockAPI, permite, según el rol (estudiante/docente), listar, editar, agregar y eliminar recursos de tipo academicos como libros, videos, tutoriales, articulos de ingenieria. Además, la API cuenta con endpoint para Registrar nuevos usuarios
-
+#### Credenciales de Usuarios para pruebas:
+##### Rol = Docente ----> Email: pablo.ortiz@docente.edu.sv; Contraseña: Pass\*docente\*26
+##### Rol = Estudiante -> Email: eduardo.ortiz@estudiante.edu.sv; Contraseña: Pass\*estudiante\*26
 ## 🌐 Demostración en Vivo
 
 Prueba la aplicación directamente desde tu navegador o teléfono antes de descargar el código fuente.
